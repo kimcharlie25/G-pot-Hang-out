@@ -17,19 +17,19 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+        return 'bg-gspot-black-light text-gold-400 border-gold-400';
       case 'confirmed':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'bg-gspot-black-light text-neon-green border-neon-green';
       case 'preparing':
-        return 'bg-purple-100 text-purple-800 border-purple-300';
+        return 'bg-gspot-black-light text-gold-300 border-gold-300';
       case 'ready':
-        return 'bg-green-100 text-green-800 border-green-300';
+        return 'bg-neon-green text-gspot-black border-neon-green';
       case 'completed':
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+        return 'bg-gspot-black-light text-gold-300 border-gold-300';
       case 'cancelled':
-        return 'bg-red-100 text-red-800 border-red-300';
+        return 'bg-gspot-black-light text-gold-400 border-gold-400';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+        return 'bg-gspot-black-light text-gold-400 border-gold-400';
     }
   };
 
@@ -180,20 +180,20 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen gspot-bg-gradient">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-red-200">
+      <div className="gspot-card-bg shadow-lg border-b border-neon-green/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <button
                 onClick={onBack}
-                className="flex items-center space-x-2 text-gray-600 hover:text-black transition-colors duration-200"
+                className="flex items-center space-x-2 text-gold-300 hover:text-gold-400 transition-colors duration-200 gspot-border-glow px-4 py-2 rounded-lg bg-gspot-black-light"
               >
                 <ArrowLeft className="h-5 w-5" />
                 <span>Back to Menu</span>
               </button>
-              <h1 className="text-2xl font-noto font-semibold text-black">Track Your Order</h1>
+              <h1 className="text-2xl font-gspot font-semibold text-gold-400 gspot-text-glow">Track Your Order</h1>
             </div>
           </div>
         </div>
@@ -201,10 +201,10 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Search Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-200">
+        <div className="gspot-card-bg rounded-xl shadow-lg p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <Search className="h-5 w-5 text-red-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Search Order</h2>
+            <Search className="h-5 w-5 text-gold-400" />
+            <h2 className="text-lg font-semibold text-gold-300">Search Order</h2>
           </div>
 
           <form onSubmit={handleSearch} className="space-y-4">
@@ -213,10 +213,10 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
               <button
                 type="button"
                 onClick={() => setSearchType('orderId')}
-                className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
+                className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all font-medium ${
                   searchType === 'orderId'
-                    ? 'border-red-600 bg-red-50 text-red-700 font-medium'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'gspot-button-primary border-neon-green'
+                    : 'border-neon-green/30 bg-gspot-black-light text-gold-300 hover:border-neon-green/60'
                 }`}
               >
                 Order ID
@@ -224,10 +224,10 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
               <button
                 type="button"
                 onClick={() => setSearchType('phone')}
-                className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all ${
+                className={`flex-1 px-4 py-2 rounded-lg border-2 transition-all font-medium ${
                   searchType === 'phone'
-                    ? 'border-red-600 bg-red-50 text-red-700 font-medium'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'gspot-button-primary border-neon-green'
+                    : 'border-neon-green/30 bg-gspot-black-light text-gold-300 hover:border-neon-green/60'
                 }`}
               >
                 Phone Number
@@ -241,13 +241,13 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 placeholder={searchType === 'orderId' ? 'Enter Order ID (e.g., ABC12345)' : 'Enter phone number'}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                className="flex-1 px-4 py-3 bg-gspot-black-light text-gold-200 border border-neon-green/30 rounded-lg focus:ring-2 focus:ring-neon-green focus:border-neon-green placeholder-gold-400/50"
                 disabled={loading}
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed font-medium whitespace-nowrap"
+                className="px-8 py-3 gspot-button-primary rounded-lg transition-all disabled:bg-gspot-black-light disabled:text-gold-400/50 disabled:cursor-not-allowed disabled:border-2 disabled:border-neon-green/20 font-semibold whitespace-nowrap shadow-lg"
               >
                 {loading ? 'Searching...' : 'Search'}
               </button>
@@ -256,9 +256,9 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-              <p className="text-red-800 text-sm">{error}</p>
+            <div className="mt-4 p-4 bg-gspot-black-light border-2 border-gold-400 rounded-lg flex items-start gap-3 gspot-border-glow">
+              <AlertCircle className="h-5 w-5 text-gold-400 mt-0.5 flex-shrink-0" />
+              <p className="text-gold-300 text-sm">{error}</p>
             </div>
           )}
         </div>
@@ -267,116 +267,116 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
         {order && (
           <div className="space-y-6">
             {/* Status Card */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div className="gspot-card-bg rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-900">Order Status</h2>
+                <h2 className="text-xl font-semibold text-gold-300">Order Status</h2>
                 <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${getStatusColor(order.status)}`}>
                   {getStatusIcon(order.status)}
                   <span className="font-medium capitalize">{order.status}</span>
                 </div>
               </div>
-              <p className="text-gray-600">{getStatusMessage(order.status)}</p>
+              <p className="text-gold-400">{getStatusMessage(order.status)}</p>
             </div>
 
             {/* Order Information */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-red-600" />
+            <div className="gspot-card-bg rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gold-300 mb-4 flex items-center gap-2">
+                <FileText className="h-5 w-5 text-gold-400" />
                 Order Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <Package className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <Package className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Order ID</p>
-                    <p className="font-semibold text-gray-900">#{order.id.slice(-8).toUpperCase()}</p>
+                    <p className="text-sm text-gold-400">Order ID</p>
+                    <p className="font-semibold text-gold-300">#{order.id.slice(-8).toUpperCase()}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <Calendar className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <Calendar className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Order Date</p>
-                    <p className="font-semibold text-gray-900">{formatDateTime(order.created_at)}</p>
+                    <p className="text-sm text-gold-400">Order Date</p>
+                    <p className="font-semibold text-gold-300">{formatDateTime(order.created_at)}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <User className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <User className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Customer Name</p>
-                    <p className="font-semibold text-gray-900">{order.customer_name}</p>
+                    <p className="text-sm text-gold-400">Customer Name</p>
+                    <p className="font-semibold text-gold-300">{order.customer_name}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <Phone className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <Phone className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Contact Number</p>
-                    <p className="font-semibold text-gray-900">{order.contact_number}</p>
+                    <p className="text-sm text-gold-400">Contact Number</p>
+                    <p className="font-semibold text-gold-300">{order.contact_number}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <MapPin className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <MapPin className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Service Type</p>
-                    <p className="font-semibold text-gray-900">{formatServiceType(order.service_type)}</p>
+                    <p className="text-sm text-gold-400">Service Type</p>
+                    <p className="font-semibold text-gold-300">{formatServiceType(order.service_type)}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <DollarSign className="h-5 w-5 text-red-600" />
+                  <div className="p-2 bg-gspot-black-light rounded-lg gspot-border-glow">
+                    <DollarSign className="h-5 w-5 text-gold-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Total Amount</p>
-                    <p className="font-semibold text-gray-900 text-xl">₱{order.total.toFixed(2)}</p>
+                    <p className="text-sm text-gold-400">Total Amount</p>
+                    <p className="font-semibold text-gold-300 text-xl gspot-text-glow">₱{order.total.toFixed(2)}</p>
                   </div>
                 </div>
               </div>
 
               {order.address && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-sm text-gray-500 mb-1">Delivery Address</p>
-                  <p className="text-gray-900">{order.address}</p>
+                <div className="mt-4 pt-4 border-t border-neon-green/30">
+                  <p className="text-sm text-gold-400 mb-1">Delivery Address</p>
+                  <p className="text-gold-300">{order.address}</p>
                 </div>
               )}
 
               {order.notes && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-sm text-gray-500 mb-1">Special Instructions</p>
-                  <p className="text-gray-900">{order.notes}</p>
+                <div className="mt-4 pt-4 border-t border-neon-green/30">
+                  <p className="text-sm text-gold-400 mb-1">Special Instructions</p>
+                  <p className="text-gold-300">{order.notes}</p>
                 </div>
               )}
             </div>
 
             {/* Order Items */}
-            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Package className="h-5 w-5 text-red-600" />
+            <div className="gspot-card-bg rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold text-gold-300 mb-4 flex items-center gap-2">
+                <Package className="h-5 w-5 text-gold-400" />
                 Order Items
               </h3>
               <div className="space-y-3">
                 {order.order_items.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={item.id} className="flex items-center justify-between p-4 bg-gspot-black-light rounded-lg gspot-border-glow">
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900">{item.name}</p>
+                      <p className="font-medium text-gold-300">{item.name}</p>
                       {item.variation && (
-                        <p className="text-sm text-gray-600">Size: {item.variation.name}</p>
+                        <p className="text-sm text-gold-400">Size: {item.variation.name}</p>
                       )}
                       {item.add_ons && item.add_ons.length > 0 && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gold-400">
                           Add-ons: {item.add_ons.map((addon: any) => 
                             addon.quantity > 1 ? `${addon.name} x${addon.quantity}` : addon.name
                           ).join(', ')}
@@ -384,8 +384,8 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="text-gray-900">₱{item.unit_price.toFixed(2)} x {item.quantity}</p>
-                      <p className="font-semibold text-red-600">₱{item.subtotal.toFixed(2)}</p>
+                      <p className="text-gold-300">₱{item.unit_price.toFixed(2)} x {item.quantity}</p>
+                      <p className="font-semibold text-gold-400 gspot-text-glow">₱{item.subtotal.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -396,7 +396,7 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({ onBack }) => {
             <div className="text-center">
               <button
                 onClick={handleClearSearch}
-                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                className="px-8 py-3 gspot-button-primary rounded-lg transition-all transform hover:scale-105 font-semibold shadow-lg"
               >
                 Search Another Order
               </button>

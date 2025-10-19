@@ -1,8 +1,11 @@
+/* G'$pot Hangout Typography Imports */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Anton&family=Bebas+Neue&family=Playfair+Display:wght@400;500;600;700;800;900&family=Pacifico&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ClickEats Custom Styles */
+/* G'$pot Hangout Custom Styles */
 .bg-cream-50 {
   background-color: #fefce8;
 }
@@ -36,7 +39,7 @@
 }
 
 .hover\:border-cream-400:hover {
-  border-color: #fbbf24;
+  border-color: #FCDC0F;
 }
 
 .focus\:ring-cream-500:focus {
@@ -67,4 +70,323 @@ img {
   top: -9999px;
   width: 1px;
   height: 1px;
+}
+
+/* ============================================
+   G'$POT HANGOUT DESIGN SYSTEM
+   ============================================ */
+
+/* ===== BACKGROUNDS ===== */
+.gspot-bg-primary {
+  background-color: #000000;
+}
+
+.gspot-bg-elevated {
+  background-color: #1a1a1a;
+}
+
+.gspot-bg-card {
+  background-color: #2a2a2a;
+}
+
+.gspot-bg-gradient {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+}
+
+/* ===== TYPOGRAPHY STYLES ===== */
+
+/* Logo Text - Rounded bold with neon outline */
+.gspot-logo {
+  color: #FFD700;
+  font-family: 'Fredoka One', 'Baloo 2', 'Righteous', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Main Headings (H1, H2) - Bold condensed */
+.gspot-heading-primary {
+  color: #FFD700;
+  font-family: 'Anton', 'Bebas Neue', 'Impact', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Subheadings (H3, H4) - Bold serif */
+.gspot-heading-secondary {
+  color: #FFD700;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-weight: 700;
+}
+
+/* Slogans & Marketing Phrases - Script/Brush */
+.gspot-slogan {
+  color: #FFD700;
+  font-family: 'Pacifico', 'Dancing Script', 'Brush Script MT', cursive;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Body Text - Clean sans-serif */
+.gspot-body-text {
+  color: #D3D3D3;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  line-height: 1.6;
+}
+
+.gspot-body-text-light {
+  color: #F5F5F5;
+}
+
+.gspot-body-text-secondary {
+  color: #A8A8A8;
+}
+
+/* Price Text - Highlighted */
+.gspot-price {
+  color: #FFD700;
+  font-weight: 700;
+}
+
+.gspot-price-alt {
+  color: #00FF00;
+  font-weight: 700;
+}
+
+/* ===== BORDERS & DIVIDERS ===== */
+.gspot-border-neon {
+  border: 2px solid #00FF00;
+}
+
+.gspot-border-neon-thin {
+  border: 1px solid #00FF00;
+}
+
+.gspot-border-gold {
+  border: 2px solid #FFD700;
+}
+
+.gspot-border-gold-thin {
+  border: 1px solid #B8860B;
+}
+
+.gspot-divider-neon {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #00FF00 50%, transparent 100%);
+}
+
+.gspot-divider-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #B8860B 50%, transparent 100%);
+}
+
+/* ===== BUTTONS ===== */
+
+/* Primary Button - Neon green bg with gold text */
+.gspot-btn-primary {
+  background: linear-gradient(135deg, #00FF00 0%, #00CC00 100%);
+  color: #FFD700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gspot-btn-primary:hover {
+  background: linear-gradient(135deg, #33FF33 0%, #00FF00 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+}
+
+/* Secondary Button - Black bg with gold text and neon border */
+.gspot-btn-secondary {
+  background-color: #000000;
+  color: #FFD700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  border: 2px solid #00FF00;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gspot-btn-secondary:hover {
+  background-color: #1a1a1a;
+  border-color: #33FF33;
+  transform: translateY(-2px);
+}
+
+/* Tertiary/Link Button - Gold text with underline */
+.gspot-btn-link {
+  background: transparent;
+  color: #FFD700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #00FF00;
+  text-underline-offset: 4px;
+  transition: all 0.3s ease;
+}
+
+.gspot-btn-link:hover {
+  color: #00FF00;
+  text-decoration-color: #FFD700;
+}
+
+/* ===== FORMS & INPUTS ===== */
+.gspot-input {
+  background-color: #1a1a1a;
+  color: #D3D3D3;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  padding: 0.75rem 1rem;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+.gspot-input:focus {
+  outline: none;
+  border-color: #00FF00;
+  box-shadow: 0 0 0 2px rgba(0, 255, 0, 0.1);
+}
+
+.gspot-input::placeholder {
+  color: #A8A8A8;
+}
+
+.gspot-label {
+  color: #FFD700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* ===== CARDS ===== */
+.gspot-card {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid #00FF00;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.gspot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 255, 0, 0.2);
+}
+
+.gspot-card-simple {
+  background-color: #2a2a2a;
+  border: 1px solid #B8860B;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+/* ===== ICONS ===== */
+.gspot-icon-gold {
+  color: #FFD700;
+}
+
+.gspot-icon-neon {
+  color: #00FF00;
+}
+
+/* ===== ALERTS & NOTIFICATIONS ===== */
+.gspot-alert-success {
+  background-color: rgba(0, 255, 0, 0.1);
+  border: 1px solid #00FF00;
+  color: #00FF00;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.gspot-alert-info {
+  background-color: rgba(255, 215, 0, 0.1);
+  border: 1px solid #FFD700;
+  color: #FFD700;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.gspot-alert-warning {
+  background-color: rgba(218, 165, 32, 0.1);
+  border: 1px solid #DAA520;
+  color: #DAA520;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* ===== INTERACTIVE STATES ===== */
+.gspot-interactive {
+  transition: all 0.3s ease;
+}
+
+.gspot-interactive:hover {
+  color: #00FF00;
+}
+
+.gspot-interactive:active {
+  color: #FFD700;
+}
+
+/* ===== SPECIAL EFFECTS ===== */
+.gspot-glow-neon {
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.gspot-glow-gold {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* ===== BUTTON STYLES ===== */
+.gspot-button-primary {
+  background: #000000;
+  color: #B8860B;
+  border: 3px solid #B8860B;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.gspot-button-primary:hover {
+  background: #1a1a1a;
+  border: 3px solid #B8860B;
+  color: #B8860B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+}
+
+/* ===== CARD STYLES ===== */
+.gspot-card-bg {
+  background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+  border: 2px solid #B8860B;
+}
+
+/* ===== BORDER & TEXT GLOW ===== */
+.gspot-border-glow {
+  border: 2px solid #B8860B;
+}
+
+.gspot-neon-glow {
+  border: 2px solid #B8860B;
+}
+
+.gspot-text-glow {
+  color: #B8860B;
 }

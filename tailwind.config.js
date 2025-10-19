@@ -4,6 +4,31 @@ export default {
   theme: {
     extend: {
       colors: {
+        // G'$pot Hangout Brand Colors
+        gold: {
+          50: '#fffef7',
+          100: '#fffbeb',
+          200: '#fef3c7',
+          300: '#fde68a',
+          400: '#fcd34d',
+          500: '#fbbf24',
+          600: '#f59e0b',
+          700: '#d97706',
+          800: '#b45309',
+          900: '#92400e',
+          950: '#78350f'
+        },
+        neon: {
+          green: '#B8860B',
+          'green-dark': '#9A7209',
+          'green-light': '#D4A825'
+        },
+        gspot: {
+          black: '#0a0a0a',
+          'black-light': '#1a1a1a',
+          'black-dark': '#000000'
+        },
+        // Keep original colors for backward compatibility
         red: {
           50: '#fef2f2',
           100: '#fee2e2',
@@ -30,6 +55,8 @@ export default {
         }
       },
       fontFamily: {
+        'gspot': ['Fredoka One', 'cursive'], // Rounded, bold sans-serif for logo
+        'gspot-body': ['Playfair Display', 'serif'], // Bold italic serif for taglines
         'inter': ['Inter', 'sans-serif'],
         'noto': ['Noto Serif', 'serif']
       },

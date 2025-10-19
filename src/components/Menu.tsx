@@ -91,12 +91,12 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
         activeCategory={activeCategory}
         onCategoryClick={handleCategoryClick}
       />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 gspot-bg-gradient">
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-noto font-semibold text-black mb-4">Our Menu</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Discover our selection of authentic dim sum, flavorful noodles, and traditional Asian dishes, 
-          all prepared with fresh ingredients and authentic techniques.
+        <h2 className="text-4xl font-gspot gspot-logo mb-4">Our Menu</h2>
+        <p className="text-gold-300 max-w-2xl mx-auto font-gspot-body italic gspot-text-glow">
+        If you are looking for a cozy and budget meal where food lovers unite, TARA NA SA G$pot Hangout!
+
         </p>
       </div>
 
@@ -108,8 +108,8 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
         return (
           <section key={category.id} id={category.id} className="mb-16">
             <div className="flex items-center mb-8">
-              <span className="text-3xl mr-3">{category.icon}</span>
-              <h3 className="text-3xl font-noto font-medium text-black">{category.name}</h3>
+              <span className="text-3xl mr-3 gspot-text-glow">{category.icon}</span>
+              <h3 className="text-3xl font-gspot font-medium text-gold-400 gspot-text-glow">{category.name}</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

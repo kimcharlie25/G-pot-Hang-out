@@ -106,9 +106,9 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
 
   return (
     <>
-      <div className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group animate-scale-in border border-gray-100 ${!item.available ? 'opacity-60' : ''}`}>
+      <div className={`gspot-card-bg rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group animate-scale-in ${!item.available ? 'opacity-60' : ''}`}>
         {/* Image Container with Badges */}
-        <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="relative h-48 bg-gradient-to-br from-gspot-black-light to-gspot-black">
           {item.image ? (
             <img
               src={item.image}
@@ -123,32 +123,32 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
             />
           ) : null}
           <div className={`absolute inset-0 flex items-center justify-center ${item.image ? 'hidden' : ''}`}>
-            <div className="text-6xl opacity-20 text-gray-400">☕</div>
+            <div className="text-6xl opacity-20 text-gold-400">🍽️</div>
           </div>
           
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
             {item.isOnDiscount && item.discountPrice && (
-              <div className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+              <div className="gspot-button-primary text-gspot-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
                 SALE
               </div>
             )}
             {item.popular && (
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              <div className="bg-gradient-to-r from-gold-500 to-gold-600 text-gspot-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg gspot-neon-glow">
                 ⭐ POPULAR
               </div>
             )}
           </div>
           
           {!item.available && (
-            <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+            <div className="absolute top-3 right-3 bg-gspot-black-light text-gold-400 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg gspot-border-glow">
               UNAVAILABLE
             </div>
           )}
           
           {/* Discount Percentage Badge */}
           {showDiscount && discountedPrice !== undefined && (
-            <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-red-600 text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+            <div className="absolute bottom-3 right-3 bg-gspot-black-light/90 backdrop-blur-sm text-gold-400 text-xs font-bold px-2 py-1 rounded-full shadow-lg gspot-border-glow">
               {Math.round(((basePrice - discountedPrice) / basePrice) * 100)}% OFF
             </div>
           )}
@@ -157,15 +157,15 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         {/* Content */}
         <div className="p-5">
           <div className="flex items-start justify-between mb-3">
-            <h4 className="text-lg font-semibold text-gray-900 leading-tight flex-1 pr-2">{item.name}</h4>
+            <h4 className="text-lg font-semibold text-gold-300 leading-tight flex-1 pr-2 gspot-text-glow">{item.name}</h4>
             {item.variations && item.variations.length > 0 && (
-              <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full whitespace-nowrap">
+              <div className="text-xs text-gold-400 bg-gspot-black-light px-2 py-1 rounded-full whitespace-nowrap gspot-border-glow">
                 {item.variations.length} sizes
               </div>
             )}
           </div>
           
-          <p className={`text-sm mb-4 leading-relaxed ${!item.available ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-sm mb-4 leading-relaxed ${!item.available ? 'text-gold-400' : 'text-gold-200'}`}>
             {!item.available ? 'Currently Unavailable' : item.description}
           </p>
           
@@ -175,25 +175,25 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
               {showDiscount && discountedPrice !== undefined ? (
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-red-600">
+                    <span className="text-2xl font-bold text-gold-400 gspot-text-glow">
                       ₱{discountedPrice.toFixed(2)}
                     </span>
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className="text-sm text-gold-400 line-through">
                       ₱{basePrice.toFixed(2)}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gold-300">
                     Save ₱{(basePrice - discountedPrice).toFixed(2)}
                   </div>
                 </div>
               ) : (
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-2xl font-bold text-gold-400 gspot-text-glow">
                   ₱{basePrice.toFixed(2)}
                 </div>
               )}
               
               {item.variations && item.variations.length > 0 && (
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gold-300 mt-1">
                   Starting price
                 </div>
               )}
@@ -204,31 +204,31 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
               {!item.available ? (
                 <button
                   disabled
-                  className="bg-gray-200 text-gray-500 px-4 py-2.5 rounded-xl cursor-not-allowed font-medium text-sm"
+                  className="bg-gspot-black-light text-gold-400 px-4 py-2.5 rounded-xl cursor-not-allowed font-medium text-sm gspot-border-glow"
                 >
                   Unavailable
                 </button>
               ) : quantity === 0 ? (
                 <button
                   onClick={handleAddToCart}
-                  className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-2.5 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:scale-105 font-medium text-sm shadow-lg hover:shadow-xl"
+                  className="gspot-button-primary text-gspot-black px-6 py-2.5 rounded-xl transition-all duration-200 transform hover:scale-105 font-medium text-sm shadow-lg hover:shadow-xl"
                 >
                   {item.variations?.length || item.addOns?.length ? 'Customize' : 'Add to Cart'}
                 </button>
               ) : (
-                <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-1 border border-yellow-200">
+                <div className="flex items-center space-x-2 bg-gspot-black-light rounded-xl p-1 gspot-border-glow">
                   <button
                     onClick={handleDecrement}
-                    className="p-2 hover:bg-yellow-200 rounded-lg transition-colors duration-200 hover:scale-110"
+                    className="p-2 hover:bg-gspot-black rounded-lg transition-colors duration-200 hover:scale-110"
                   >
-                    <Minus className="h-4 w-4 text-gray-700" />
+                    <Minus className="h-4 w-4 text-gold-400" />
                   </button>
-                  <span className="font-bold text-gray-900 min-w-[28px] text-center text-sm">{quantity}</span>
+                  <span className="font-bold text-gold-300 min-w-[28px] text-center text-sm">{quantity}</span>
                   <button
                     onClick={handleIncrement}
-                    className="p-2 hover:bg-yellow-200 rounded-lg transition-colors duration-200 hover:scale-110"
+                    className="p-2 hover:bg-gspot-black rounded-lg transition-colors duration-200 hover:scale-110"
                   >
-                    <Plus className="h-4 w-4 text-gray-700" />
+                    <Plus className="h-4 w-4 text-gold-400" />
                   </button>
                 </div>
               )}
@@ -239,17 +239,17 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           {item.trackInventory && item.stockQuantity !== null && (
             <div className="mt-3">
               {item.stockQuantity > item.lowStockThreshold ? (
-                <div className="flex items-center space-x-2 text-xs text-green-700 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+                <div className="flex items-center space-x-2 text-xs text-neon-green bg-gspot-black-light px-3 py-2 rounded-lg gspot-border-glow">
                   <span className="font-semibold">✓</span>
                   <span className="font-medium">{item.stockQuantity} in stock</span>
                 </div>
               ) : item.stockQuantity > 0 ? (
-                <div className="flex items-center space-x-2 text-xs text-orange-700 bg-orange-50 px-3 py-2 rounded-lg border border-orange-200 animate-pulse">
+                <div className="flex items-center space-x-2 text-xs text-gold-400 bg-gspot-black-light px-3 py-2 rounded-lg gspot-border-glow animate-pulse">
                   <span className="font-semibold">⚠️</span>
                   <span className="font-medium">Only {item.stockQuantity} left!</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-2 text-xs text-red-700 bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+                <div className="flex items-center space-x-2 text-xs text-gold-400 bg-gspot-black-light px-3 py-2 rounded-lg gspot-border-glow">
                   <span className="font-semibold">✕</span>
                   <span className="font-medium">Out of stock</span>
                 </div>
@@ -259,7 +259,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
 
           {/* Add-ons indicator */}
           {item.addOns && item.addOns.length > 0 && (
-            <div className="flex items-center space-x-1 text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-lg mt-2">
+            <div className="flex items-center space-x-1 text-xs text-gold-300 bg-gspot-black-light px-2 py-1 rounded-lg mt-2 gspot-border-glow">
               <span>+</span>
               <span>{item.addOns.length} add-on{item.addOns.length > 1 ? 's' : ''} available</span>
             </div>

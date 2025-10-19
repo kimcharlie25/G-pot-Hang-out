@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Save, X, ArrowLeft, Coffee, TrendingUp, Package, Users, FolderOpen, CreditCard, Settings, ShoppingCart, LogOut, Boxes } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, ArrowLeft, Coffee, TrendingUp, Package, Users, FolderOpen, CreditCard, Settings, ShoppingCart, LogOut, Boxes, BookOpen } from 'lucide-react';
 import { MenuItem, Variation, AddOn } from '../types';
 import { addOnCategories } from '../data/menuData';
 import { useMenu } from '../hooks/useMenu';
@@ -12,12 +12,13 @@ import SiteSettingsManager from './SiteSettingsManager';
 import OrdersManager from './OrdersManager';
 import InventoryManager from './InventoryManager';
 import CustomersManager from './CustomersManager';
+import UserManual from './UserManual';
 
 const AdminDashboard: React.FC = () => {
   const { user, signOut } = useAuth();
   const { menuItems, loading, addMenuItem, updateMenuItem, deleteMenuItem } = useMenu();
   const { categories } = useCategories();
-  const [currentView, setCurrentView] = useState<'dashboard' | 'items' | 'add' | 'edit' | 'categories' | 'payments' | 'settings' | 'orders' | 'inventory' | 'customers'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'items' | 'add' | 'edit' | 'categories' | 'payments' | 'settings' | 'orders' | 'inventory' | 'customers' | 'manual'>('dashboard');
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -972,6 +973,11 @@ const AdminDashboard: React.FC = () => {
     return <CustomersManager onBack={() => setCurrentView('dashboard')} />;
   }
 
+  // User Manual View
+  if (currentView === 'manual') {
+    return <UserManual onBack={() => setCurrentView('dashboard')} />;
+  }
+
   // Dashboard View
   return (
     <div className="min-h-screen bg-gray-50">
@@ -979,8 +985,7 @@ const AdminDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <Coffee className="h-8 w-8 text-black" />
-              <h1 className="text-2xl font-noto font-semibold text-black">ClickEats Admin</h1>
+              <h1 className="text-2xl font-bold text-black">G'$pot Hang-out</h1>
             </div>
             <div className="flex items-center space-x-4">
               <a
@@ -1116,6 +1121,13 @@ const AdminDashboard: React.FC = () => {
               >
                 <Settings className="h-5 w-5 text-gray-400" />
                 <span className="font-medium text-gray-900">Site Settings</span>
+              </button>
+              <button
+                onClick={() => setCurrentView('manual')}
+                className="w-full flex items-center space-x-3 p-3 text-left hover:bg-blue-50 rounded-lg transition-colors duration-200 border-2 border-blue-200"
+              >
+                <BookOpen className="h-5 w-5 text-blue-600" />
+                <span className="font-medium text-blue-900">📖 User Manual</span>
               </button>
             </div>
           </div>
