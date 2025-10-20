@@ -101,6 +101,36 @@ export const useOrders = () => {
     }
   }, [fetchOrders]);
 
+  const deleteOrders = useCallback(async (orderIds: string[]) => {
+    try {
+      setError(null);
+
+      // Delete order items first (cascade should handle this, but being explicit)
+      const { error: itemsDeleteError } = await supabase
+        .from('order_items')
+        .delete()
+        .in('order_id', orderIds);
+
+      if (itemsDeleteError) throw itemsDeleteError;
+
+      // Delete orders
+      const { error: ordersDeleteError } = await supabase
+        .from('orders')
+        .delete()
+        .in('id', orderIds);
+
+      if (ordersDeleteError) throw ordersDeleteError;
+
+      // Refresh orders list
+      await fetchOrders();
+    } catch (err) {
+      console.error('Error deleting orders:', err);
+      const message = err instanceof Error ? err.message : 'Failed to delete orders';
+      setError(message);
+      throw err;
+    }
+  }, [fetchOrders]);
+
   const createOrder = useCallback(async (payload: CreateOrderPayload) => {
     try {
       setCreating(true);
@@ -248,6 +278,7 @@ export const useOrders = () => {
     orders, 
     loading, 
     fetchOrders, 
-    updateOrderStatus 
+    updateOrderStatus,
+    deleteOrders
   };
 };

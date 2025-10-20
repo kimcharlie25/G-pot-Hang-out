@@ -10,14 +10,14 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeCategory, onCategoryClick }
   const { categories } = useCategories();
 
   return (
-    <div className="sticky top-16 z-40 gspot-bg-gradient backdrop-blur-sm border-b border-neon-green/30 gspot-neon-glow">
+    <div className="sticky top-16 z-40 bg-white backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="flex overflow-x-auto scrollbar-hide px-4 py-3">
         <button
           onClick={() => onCategoryClick('all')}
           className={`flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full mr-3 transition-all duration-200 ${
             activeCategory === 'all'
-              ? 'gspot-button-primary text-gspot-black'
-              : 'bg-gspot-black-light text-gold-200 hover:text-gold-400 hover:bg-gspot-black gspot-border-glow'
+              ? 'gspot-button-primary text-white shadow-lg'
+              : 'bg-gray-100 text-gray-700 hover:text-green-800 hover:bg-green-50 border-2 border-gray-300'
           }`}
         >
           <span className="text-lg">🍽️</span>
@@ -29,8 +29,8 @@ const MobileNav: React.FC<MobileNavProps> = ({ activeCategory, onCategoryClick }
             onClick={() => onCategoryClick(category.id)}
             className={`flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full mr-3 transition-all duration-200 ${
               activeCategory === category.id
-                ? 'gspot-button-primary text-gspot-black'
-                : 'bg-gspot-black-light text-gold-200 hover:text-gold-400 hover:bg-gspot-black gspot-border-glow'
+                ? 'gspot-button-primary text-white shadow-lg'
+                : 'bg-gray-100 text-gray-700 hover:text-green-800 hover:bg-green-50 border-2 border-gray-300'
             }`}
           >
             <span className="text-lg">{category.icon}</span>

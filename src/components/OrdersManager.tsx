@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, CheckCircle, Clock, XCircle, RefreshCw, ChevronDown, Search, Image as ImageIcon, Download, Calendar, DollarSign } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, XCircle, RefreshCw, ChevronDown, Search, Image as ImageIcon, Download, Calendar, DollarSign, Trash2, AlertTriangle } from 'lucide-react';
 import { useOrders, OrderWithItems } from '../hooks/useOrders';
 
 interface OrdersManagerProps {
@@ -7,7 +7,7 @@ interface OrdersManagerProps {
 }
 
 const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
-  const { orders, loading, error, updateOrderStatus } = useOrders();
+  const { orders, loading, error, updateOrderStatus, deleteOrders } = useOrders();
   const [selectedOrder, setSelectedOrder] = useState<OrderWithItems | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
   const [query, setQuery] = useState('');
@@ -17,6 +17,9 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [selectedOrderIds, setSelectedOrderIds] = useState<Set<string>>(new Set());
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -216,6 +219,40 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
     setDateTo('');
   };
 
+  const handleSelectOrder = (orderId: string) => {
+    const newSelected = new Set(selectedOrderIds);
+    if (newSelected.has(orderId)) {
+      newSelected.delete(orderId);
+    } else {
+      newSelected.add(orderId);
+    }
+    setSelectedOrderIds(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedOrderIds.size === filtered.length) {
+      setSelectedOrderIds(new Set());
+    } else {
+      setSelectedOrderIds(new Set(filtered.map(order => order.id)));
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedOrderIds.size === 0) return;
+    
+    try {
+      setDeleting(true);
+      await deleteOrders(Array.from(selectedOrderIds));
+      setSelectedOrderIds(new Set());
+      setShowDeleteModal(false);
+      alert(`Successfully deleted ${selectedOrderIds.size} order(s)!`);
+    } catch (err) {
+      alert('Failed to delete orders. Please try again.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   // Calculate total sales from completed orders
   const totalSales = useMemo(() => {
     return filtered
@@ -361,14 +398,25 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
                 </div>
               </div>
               
-              <button
-                onClick={exportToCSV}
-                disabled={exporting || filtered.filter(o => o.status.toLowerCase() === 'completed').length === 0}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
-              >
-                <Download className="h-4 w-4" />
-                {exporting ? 'Exporting...' : 'Export Completed Orders'}
-              </button>
+              <div className="flex items-center gap-3">
+                {selectedOrderIds.size > 0 && (
+                  <button
+                    onClick={() => setShowDeleteModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium shadow-sm"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete Selected ({selectedOrderIds.size})
+                  </button>
+                )}
+                <button
+                  onClick={exportToCSV}
+                  disabled={exporting || filtered.filter(o => o.status.toLowerCase() === 'completed').length === 0}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
+                >
+                  <Download className="h-4 w-4" />
+                  {exporting ? 'Exporting...' : 'Export Completed Orders'}
+                </button>
+              </div>
             </div>
 
             {/* Results count */}
@@ -446,6 +494,14 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 text-gray-600 sticky top-0">
                     <tr>
+                      <th className="px-5 py-3 text-center font-medium w-12">
+                        <input
+                          type="checkbox"
+                          checked={filtered.length > 0 && selectedOrderIds.size === filtered.length}
+                          onChange={handleSelectAll}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                        />
+                      </th>
                       <th className="px-5 py-3 text-left font-medium">Order</th>
                       <th className="px-5 py-3 text-left font-medium">Customer</th>
                       <th className="px-5 py-3 text-left font-medium">Service</th>
@@ -458,6 +514,14 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
                   <tbody className="divide-y divide-gray-200">
                     {filtered.map((order) => (
                       <tr key={order.id} className="hover:bg-gray-50">
+                        <td className="px-5 py-4 text-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedOrderIds.has(order.id)}
+                            onChange={() => handleSelectOrder(order.id)}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                          />
+                        </td>
                         <td className="px-5 py-4">
                           <div className="font-medium text-gray-900">#{order.id.slice(-8).toUpperCase()}</div>
                           <div className="text-xs text-gray-500">{order.order_items.length} item(s)</div>
@@ -514,7 +578,15 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
                 <div key={order.id} className="bg-white rounded-xl shadow-sm border border-gray-200">
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <div className="font-semibold text-gray-900">#{order.id.slice(-8).toUpperCase()}</div>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedOrderIds.has(order.id)}
+                          onChange={() => handleSelectOrder(order.id)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                        />
+                        <div className="font-semibold text-gray-900">#{order.id.slice(-8).toUpperCase()}</div>
+                      </div>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                         {getStatusIcon(order.status)}
                         <span className="ml-1 capitalize">{order.status}</span>
@@ -661,6 +733,52 @@ const OrdersManager: React.FC<OrdersManagerProps> = ({ onBack }) => {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-red-100 p-3 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Confirm Deletion</h3>
+            </div>
+            
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to permanently delete <strong className="text-red-600">{selectedOrderIds.size}</strong> selected order{selectedOrderIds.size !== 1 ? 's' : ''}? 
+              This action cannot be undone and will remove all associated order data.
+            </p>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteSelected}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {deleting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" />
+                    Delete Orders
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>

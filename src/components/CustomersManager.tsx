@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Search, Download, Phone, MapPin, ShoppingCart, Calendar, User, X } from 'lucide-react';
+import { ArrowLeft, Search, Download, Phone, MapPin, ShoppingCart, Calendar, User, X, Trash2, AlertTriangle } from 'lucide-react';
 import { useOrders } from '../hooks/useOrders';
 
 interface CustomersManagerProps {
@@ -19,12 +19,15 @@ interface CustomerInfo {
 }
 
 const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
-  const { orders, loading } = useOrders();
+  const { orders, loading, deleteOrders } = useOrders();
   const [query, setQuery] = useState('');
   const [sortKey, setSortKey] = useState<'name' | 'orderCount' | 'totalSpent' | 'lastOrderDate'>('lastOrderDate');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [exporting, setExporting] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerInfo | null>(null);
+  const [selectedCustomerKeys, setSelectedCustomerKeys] = useState<Set<string>>(new Set());
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // Extract unique customers from orders
   const customers = useMemo(() => {
@@ -128,6 +131,53 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
       return `"${field.replace(/"/g, '""')}"`;
     }
     return field;
+  };
+
+  const handleSelectCustomer = (customerKey: string) => {
+    const newSelected = new Set(selectedCustomerKeys);
+    if (newSelected.has(customerKey)) {
+      newSelected.delete(customerKey);
+    } else {
+      newSelected.add(customerKey);
+    }
+    setSelectedCustomerKeys(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedCustomerKeys.size === filtered.length) {
+      setSelectedCustomerKeys(new Set());
+    } else {
+      const allKeys = filtered.map(customer => `${customer.name}-${customer.contactNumber}`.toLowerCase());
+      setSelectedCustomerKeys(new Set(allKeys));
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedCustomerKeys.size === 0) return;
+    
+    try {
+      setDeleting(true);
+      
+      // Get all order IDs for selected customers
+      const orderIdsToDelete: string[] = [];
+      filtered.forEach(customer => {
+        const key = `${customer.name}-${customer.contactNumber}`.toLowerCase();
+        if (selectedCustomerKeys.has(key)) {
+          orderIdsToDelete.push(...customer.orderIds);
+        }
+      });
+
+      // Delete all orders for these customers
+      await deleteOrders(orderIdsToDelete);
+      
+      setSelectedCustomerKeys(new Set());
+      setShowDeleteModal(false);
+      alert(`Successfully deleted ${selectedCustomerKeys.size} customer(s) and ${orderIdsToDelete.length} associated order(s)!`);
+    } catch (err) {
+      alert('Failed to delete customer records. Please try again.');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const exportToCSV = () => {
@@ -281,14 +331,25 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                 className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <button
-              onClick={exportToCSV}
-              disabled={exporting || filtered.length === 0}
-              className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
-            >
-              <Download className="h-4 w-4" />
-              {exporting ? 'Exporting...' : 'Export to CSV'}
-            </button>
+            <div className="flex items-center gap-3">
+              {selectedCustomerKeys.size > 0 && (
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium shadow-sm"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete Selected ({selectedCustomerKeys.size})
+                </button>
+              )}
+              <button
+                onClick={exportToCSV}
+                disabled={exporting || filtered.length === 0}
+                className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
+              >
+                <Download className="h-4 w-4" />
+                {exporting ? 'Exporting...' : 'Export to CSV'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -306,6 +367,14 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50 text-gray-600">
                     <tr>
+                      <th className="px-6 py-3 text-center font-medium w-12">
+                        <input
+                          type="checkbox"
+                          checked={filtered.length > 0 && selectedCustomerKeys.size === filtered.length}
+                          onChange={handleSelectAll}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                        />
+                      </th>
                       <th 
                         className="px-6 py-3 text-left font-medium cursor-pointer hover:bg-gray-100"
                         onClick={() => toggleSort('name')}
@@ -335,8 +404,18 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {filtered.map((customer, idx) => (
+                    {filtered.map((customer, idx) => {
+                      const customerKey = `${customer.name}-${customer.contactNumber}`.toLowerCase();
+                      return (
                       <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 text-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedCustomerKeys.has(customerKey)}
+                            onChange={() => handleSelectCustomer(customerKey)}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                          />
+                        </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -378,7 +457,8 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -386,19 +466,29 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
 
             {/* Mobile Cards */}
             <div className="md:hidden space-y-4">
-              {filtered.map((customer, idx) => (
+              {filtered.map((customer, idx) => {
+                const customerKey = `${customer.name}-${customer.contactNumber}`.toLowerCase();
+                return (
                 <div key={idx} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                   <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-blue-600 font-semibold text-lg">
-                          {customer.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="ml-3">
-                        <div className="font-medium text-gray-900">{customer.name}</div>
-                        <div className="text-xs text-gray-500">
-                          {customer.orderCount > 1 ? '⭐ Repeat Customer' : 'New Customer'}
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedCustomerKeys.has(customerKey)}
+                        onChange={() => handleSelectCustomer(customerKey)}
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer mt-1"
+                      />
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-blue-600 font-semibold text-lg">
+                            {customer.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="ml-3">
+                          <div className="font-medium text-gray-900">{customer.name}</div>
+                          <div className="text-xs text-gray-500">
+                            {customer.orderCount > 1 ? '⭐ Repeat Customer' : 'New Customer'}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -430,7 +520,8 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                     View Details
                   </button>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </>
         )}
@@ -526,6 +617,52 @@ const CustomersManager: React.FC<CustomersManagerProps> = ({ onBack }) => {
                   ₱{(selectedCustomer.totalSpent / selectedCustomer.orderCount).toFixed(2)}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-scale-in">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-red-100 p-3 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Confirm Deletion</h3>
+            </div>
+            
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to permanently delete <strong className="text-red-600">{selectedCustomerKeys.size}</strong> selected customer{selectedCustomerKeys.size !== 1 ? 's' : ''}? 
+              This action cannot be undone and will remove all associated customer data and their orders.
+            </p>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteSelected}
+                disabled={deleting}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {deleting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" />
+                    Delete Customers
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
