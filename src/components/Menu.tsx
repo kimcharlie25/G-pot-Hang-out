@@ -3,6 +3,7 @@ import { MenuItem, CartItem } from '../types';
 import { useCategories } from '../hooks/useCategories';
 import MenuItemCard from './MenuItemCard';
 import MobileNav from './MobileNav';
+import { Facebook, MapPin } from 'lucide-react';
 
 // Preload images for better performance
 const preloadImages = (items: MenuItem[]) => {
@@ -137,6 +138,57 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
         );
       })}
       </main>
+
+      {/* Footer Section */}
+      <footer className="bg-gradient-to-br from-green-800 to-green-900 text-white py-12 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Facebook Link */}
+            <div className="text-center md:text-left">
+              <h3 className="text-xl font-gspot font-semibold mb-4 text-green-100">Connect With Us</h3>
+              <a
+                href="https://www.facebook.com/GSpotHangout2025"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-6 py-3 bg-white text-green-800 rounded-lg hover:bg-green-50 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <Facebook className="h-6 w-6" fill="currentColor" />
+                <span>G'$pot Hang-out Facebook Page</span>
+              </a>
+              <p className="text-green-200 text-sm mt-3">
+                Follow us for updates, promos, and delicious content!
+              </p>
+            </div>
+
+            {/* Physical Address */}
+            <div className="text-center md:text-right">
+              <h3 className="text-xl font-gspot font-semibold mb-4 text-green-100">Visit Us</h3>
+              <div className="inline-flex items-start gap-3 text-left">
+                <MapPin className="h-6 w-6 text-green-300 flex-shrink-0 mt-1" />
+                <div>
+                  <p className="text-white font-medium text-lg leading-relaxed">
+                    #5031 E Fredel St. Gent De Leon<br />
+                    Valenzuela City
+                  </p>
+                  <p className="text-green-200 text-sm mt-2">
+                    Come visit us and taste the difference!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="mt-8 pt-8 border-t border-green-700 text-center">
+            <p className="text-green-200 text-sm">
+              © 2025 G'$pot Hang-out. All rights reserved.
+            </p>
+            <p className="text-green-300 text-xs mt-2 font-gspot italic">
+              - SARAP NA BABALIK BALIKAN -
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   );
 };
