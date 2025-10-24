@@ -35,15 +35,15 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
               />
             )}
             <div className="flex flex-col items-start">
-              <h1 className="text-2xl font-gspot gspot-logo">
+              <h1 className="text-lg sm:text-xl md:text-2xl font-gspot gspot-logo">
                 {loading ? (
-                  <div className="w-32 h-6 bg-gray-200 rounded animate-pulse" />
+                  <div className="w-24 sm:w-28 md:w-32 h-4 sm:h-5 md:h-6 bg-gray-200 rounded animate-pulse" />
                 ) : (
                   siteSettings?.site_name || "G'$pot Hangout"
                 )}
               </h1>
               {!loading && (
-                <span className="text-[10px] text-green-600 font-small tracking-wider self-end -mt-1">EST 2025</span>
+                <span className="text-[8px] sm:text-[9px] md:text-[10px] text-green-600 font-small tracking-wider self-end -mt-1">EST 2025</span>
               )}
             </div>
           </button>
